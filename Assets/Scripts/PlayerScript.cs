@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
-
     public float moveSpeed = 5f;
     public Rigidbody2D rb;
     public LineRenderer lr;
@@ -42,14 +41,16 @@ public class PlayerScript : MonoBehaviour
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
-        drawLine();
-
         rb.velocity = new Vector2(movement.x * moveSpeed, movement.y * moveSpeed);
 
         if(Input.GetKeyDown("space") && dashWaitActive >= dashWait){
             StartCoroutine(Dash());
             dashWaitActive = 0;
             staminaBar.GetComponent<SpriteRenderer>().color = new Color(250f, 0f, 0f);
+        }
+
+        if(Input.GetMouseButtonDown(0)){
+
         }
     }
 
@@ -66,33 +67,5 @@ public class PlayerScript : MonoBehaviour
         rb.velocity = movement * dashSpeed;
         yield return new WaitForSeconds(dashTime);
         isDashing = false;
-    }
-
-    private void drawLine(){
-        Vector2 diff;
-        float mag;
-
-        pos = rb.position;
-        mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-        diff = mouse - pos;
-        
-
-        mag = Mathf.Sqrt((diff.x*diff.x) + (diff.y*diff.y));
-
-        //diff.x = diff.x / mag;
-        //diff.x += pos.x;
-        //diff.y *= diff.y / mag;
-        //diff.y += pos.y;
-
-        diff = diff / mag;
-
-        diff = diff * 1.5f;
-
-        diff = diff + pos;
-        //take the differences, square em, add em up, divide em by that sum, use that ratio as lengths of a new vector
-
-        lr.SetPosition(0, pos);
-        lr.SetPosition(1, diff);
     }
 }
