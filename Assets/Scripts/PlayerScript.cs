@@ -8,6 +8,7 @@ public class PlayerScript : MonoBehaviour
     public Rigidbody2D rb;
     public LineRenderer lr;
     public GameObject staminaBar;
+    public Animator animator;
     Vector2 pos;
     Vector2 mouse;
     Vector2 movement;
@@ -42,6 +43,11 @@ public class PlayerScript : MonoBehaviour
         movement.y = Input.GetAxisRaw("Vertical");
 
         rb.velocity = new Vector2(movement.x * moveSpeed, movement.y * moveSpeed);
+        if(Mathf.Abs(rb.velocity.magnitude) > 0){
+            animator.SetBool("moving", true);
+        }else{
+            animator.SetBool("moving", false);
+        }
 
         if(Input.GetKeyDown("space") && dashWaitActive >= dashWait){
             StartCoroutine(Dash());
